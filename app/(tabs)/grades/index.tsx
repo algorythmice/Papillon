@@ -41,6 +41,7 @@ import { useGradeInfluence } from './hooks/useGradeInfluence';
 import List from '@/ui/new/List';
 import Typography from '@/ui/new/Typography';
 import ActionMenu from '@/ui/components/ActionMenu';
+import MainTabErrorBoundary from '@/ui/components/MainTabErrorBoundary';
 
 const MemoizedSubjectItem = React.memo(SubjectItem);
 
@@ -606,4 +607,10 @@ const GradesView: React.FC = () => {
   )
 };
 
-export default GradesView;
+const GradesViewWithBoundary = () => (
+  <MainTabErrorBoundary>
+    <GradesView />
+  </MainTabErrorBoundary>
+);
+
+export default GradesViewWithBoundary;
