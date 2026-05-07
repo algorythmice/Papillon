@@ -35,6 +35,7 @@ export interface Personalization {
   useMaterialYou?: boolean;
   iOSBottomAccessoryEnabled?: boolean;
   showTabBarLabels?: boolean;
+  knowunityEnabled?: boolean;
   magicEnabled?: boolean;
   hideNameOnHomeScreen?: boolean;
   showAlertAtLogin?: boolean;
