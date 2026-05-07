@@ -45,7 +45,7 @@ export interface Personalization {
   wallpaper?: Wallpaper;
   disabledTabs?: string[];
   gradesSortMethod?: string;
-  gradesPeriodId?: string;
+  gradesPeriodName?: string;
   installedVersion?: string;
   releaseNotesSeenForVersion?: string;
 }

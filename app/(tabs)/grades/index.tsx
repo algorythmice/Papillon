@@ -4,7 +4,7 @@ import { MenuView } from '@react-native-menu/menu';
 import { useTheme } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import { t } from 'i18next';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Dimensions, Platform, RefreshControl, View } from 'react-native';
 import Reanimated, { LinearTransition, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -122,6 +122,7 @@ const GradesView: React.FC = () => {
   // Obtention des périodes
   const [periods, setPeriods] = useState<Period[]>([]);
   const [currentPeriod, setCurrentPeriod] = useState<Period>();
+  const hasAppliedSavedPeriod = useRef(false);
 
   const fetchPeriods = async (managerToUse = manager) => {
     if (currentPeriod || !managerToUse) { return; }
@@ -130,8 +131,8 @@ const GradesView: React.FC = () => {
     const result = await managerToUse.getGradesPeriods();
     let currentPeriodFound = getCurrentPeriod(result);
 
-    if (settings.gradesPeriodId) {
-      const savedPeriod = result.find(p => p.id === settings.gradesPeriodId);
+    if (settings.gradesPeriodName) {
+      const savedPeriod = result.find(p => p.name === settings.gradesPeriodName);
       if (savedPeriod) {
         currentPeriodFound = savedPeriod;
       }
@@ -207,6 +208,28 @@ const GradesView: React.FC = () => {
   useEffect(() => {
     fetchGradesForPeriod(currentPeriod);
   }, [currentPeriod]);
+
+  useEffect(() => {
+    if (hasAppliedSavedPeriod.current || periods.length === 0) {
+      return;
+    }
+
+    hasAppliedSavedPeriod.current = true;
+    if (settings.gradesPeriodName) {
+      const savedPeriodByName = periods.find((period) => period.name === settings.gradesPeriodName);
+      if (savedPeriodByName && savedPeriodByName.id !== currentPeriod?.id) {
+        setCurrentPeriod(savedPeriodByName);
+      }
+    }
+  }, [periods, settings.gradesPeriodName, currentPeriod?.id]);
+
+  useEffect(() => {
+    if (!currentPeriod?.name || settings.gradesPeriodName === currentPeriod.name) {
+      return;
+    }
+
+    mutateSettings('personalization', { gradesPeriodName: currentPeriod.name });
+  }, [currentPeriod?.name, settings.gradesPeriodName, mutateSettings]);
 
   const grades = useMemo(() => {
     return subjects.flatMap((subject) => subject.grades || []);
@@ -482,7 +505,6 @@ const GradesView: React.FC = () => {
                 const newPeriod = periods.find(period => period.id === selectedPeriodId);
                 setCurrentPeriod(newPeriod);
                 if (newPeriod?.id) {
-                  mutateSettings('personalization', { gradesPeriodId: newPeriod.id });
                   trackAdvancedEvent("grades_period_changed");
                 }
               }
