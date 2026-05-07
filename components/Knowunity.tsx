@@ -6,6 +6,7 @@ import React, { useMemo } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useSettingsStore } from "@/stores/settings";
+import { trackOptionalEvent } from "@/utils/logger/analytics";
 import Icon from "@/ui/components/Icon";
 import Stack from "@/ui/components/Stack";
 import Button from "@/ui/new/Button";
@@ -124,6 +125,7 @@ export default function Knowunity({ subjectColor, subjectName, subjectEmoji, for
               color={subjectColor}
               label="Découvrir les fiches"
               onPress={async () => {
+                await trackOptionalEvent("knowunity_discover_sheets_pressed");
                 const URL = "https://knowunity.fr/papillon?text=" + new URLSearchParams(formattedTask);
                 const isValid = await canOpenURL(URL);
 

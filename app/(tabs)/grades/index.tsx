@@ -42,6 +42,7 @@ import List from '@/ui/new/List';
 import Typography from '@/ui/new/Typography';
 import ActionMenu from '@/ui/components/ActionMenu';
 import MainTabErrorBoundary from '@/ui/components/MainTabErrorBoundary';
+import { trackAdvancedEvent } from '@/utils/logger/analytics';
 
 const MemoizedSubjectItem = React.memo(SubjectItem);
 
@@ -482,6 +483,7 @@ const GradesView: React.FC = () => {
                 setCurrentPeriod(newPeriod);
                 if (newPeriod?.id) {
                   mutateSettings('personalization', { gradesPeriodId: newPeriod.id });
+                  trackAdvancedEvent("grades_period_changed");
                 }
               }
             }}
