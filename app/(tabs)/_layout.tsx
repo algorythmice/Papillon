@@ -24,6 +24,7 @@ function TabLayoutContent() {
   const iOSBottomAccessoryEnabled = settingsStore?.iOSBottomAccessoryEnabled ?? true;
   const showTabBarLabels = settingsStore?.showTabBarLabels ?? true;
   const labelsHidden = Platform.OS === 'ios' ? !showTabBarLabels : false;
+  const isBottomAccessoryVisible = useBottomAccessoryVisible();
 
   const tabLabelStyle = {
     fontFamily: font("medium"),
@@ -31,7 +32,7 @@ function TabLayoutContent() {
   } as const;
 
   const shouldRenderBottomAccessory =
-    Platform.OS !== 'ios' ? false : !runsIOS26 ? false : (iOSBottomAccessoryEnabled && useBottomAccessoryVisible());
+    Platform.OS === 'ios' && runsIOS26 && iOSBottomAccessoryEnabled && isBottomAccessoryVisible;
 
   return (
     <NativeTabs
