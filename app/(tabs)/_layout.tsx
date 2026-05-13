@@ -1,4 +1,5 @@
 import BottomAccessory, { useBottomAccessoryVisible } from '@/components/BottomAccessory';
+import { useAccountStore } from '@/stores/account';
 import { useSettingsStore } from '@/stores/settings';
 import { runsIOS26 } from '@/ui/utils/IsLiquidGlass';
 import { useTheme } from '@react-navigation/native';
@@ -19,7 +20,10 @@ function TabLayoutContent() {
 
 
   const settingsStore = useSettingsStore(state => state.personalization);
-  const disabledTabs = settingsStore?.disabledTabs || [];
+  const lastUsedAccount = useAccountStore(state => state.lastUsedAccount);
+  const disabledTabs = (lastUsedAccount
+    ? settingsStore?.disabledTabsByAccount?.[lastUsedAccount]
+    : settingsStore?.disabledTabs) || [];
 
   const iOSBottomAccessoryEnabled = settingsStore?.iOSBottomAccessoryEnabled ?? true;
   const showTabBarLabels = settingsStore?.showTabBarLabels ?? true;
