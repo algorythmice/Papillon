@@ -2,9 +2,8 @@ import { Papicons } from '@getpapillon/papicons';
 import React from 'react';
 
 import Icon from '@/ui/components/Icon';
-import Item, { Leading, Trailing } from '@/ui/components/Item';
-import List from '@/ui/components/List';
 import Stack from '@/ui/components/Stack';
+import List from '@/ui/new/List';
 import Typography from '@/ui/components/Typography';
 import adjust from '@/utils/adjustColor';
 import { Modal, ScrollView, View } from 'react-native';
@@ -70,7 +69,7 @@ const ScodocUES: React.FC<{ data: UEMap, displayScale: GradeDisplayScale }> = ({
 
     return (
       <>
-        <Stack gap={8}>
+        <Stack gap={8} width={"100%"}>
 
           <AnimatedPressable onPress={() => setDisplayUEs(!displayUEs)} style={{ width: '100%' }}>
             <Stack direction='horizontal' gap={8} vAlign='start' hAlign='center' style={{ opacity: 0.6 }} padding={[10, 2]} backgroundColor={!displayUEs ? colors.text + '22' : 'transparent'} radius={12}>
@@ -92,40 +91,42 @@ const ScodocUES: React.FC<{ data: UEMap, displayScale: GradeDisplayScale }> = ({
               entering={PapillonAppearIn}
               exiting={PapillonAppearOut}
             >
-              <List>
-                {Object.entries(data).map(([key, value]) => (
-                  <Item key={key} onPress={() => setOpenedUE(key)}>
-                    <Leading>
-                      <Stack backgroundColor={value.color + "22"} padding={[8, 4]} borderRadius={8}>
-                        <Typography variant='title' color='text' color={adjust(value.color, -0.2)}>
-                          {key}
-                        </Typography>
-                      </Stack>
-                    </Leading>
-                    <Typography nowrap variant='body1' color='text'>{value.titre}</Typography>
-                    <Trailing>
-                      <Stack direction='horizontal' gap={8} hAlign='center'>
-                        <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0}>
-                          <Typography variant='navigation' color='text'>
-                            {toDisplay(value.moyenne.value)}
-                          </Typography>
-                          <Typography variant='body2' color="secondary">
-                            {scaleDenominator}
+              <List style={{ width: "100%" }}>
+                <List.Section>
+                  {Object.entries(data).map(([key, value]) => (
+                    <List.Item key={key} onPress={() => setOpenedUE(key)}>
+                      <List.Leading>
+                        <Stack backgroundColor={value.color + "22"} padding={[8, 4]} borderRadius={8}>
+                          <Typography variant='title' color='text' color={adjust(value.color, -0.2)}>
+                            {key}
                           </Typography>
                         </Stack>
+                      </List.Leading>
+                      <Typography nowrap variant='body1' color='text'>{value.titre}</Typography>
+                      <List.Trailing>
+                        <Stack direction='horizontal' gap={8} hAlign='center'>
+                          <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0}>
+                            <Typography variant='navigation' color='text'>
+                              {toDisplay(value.moyenne.value)}
+                            </Typography>
+                            <Typography variant='body2' color="secondary">
+                              {scaleDenominator}
+                            </Typography>
+                          </Stack>
 
-                        <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
-                          <Typography variant='navigation' color='text'>
-                            {value.moyenne.rang}
-                          </Typography>
-                          <Typography variant='body2' color="secondary">
-                            /{value.moyenne.total}
-                          </Typography>
+                          <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
+                            <Typography variant='navigation' color='text'>
+                              {value.moyenne.rang}
+                            </Typography>
+                            <Typography variant='body2' color="secondary">
+                              /{value.moyenne.total}
+                            </Typography>
+                          </Stack>
                         </Stack>
-                      </Stack>
-                    </Trailing>
-                  </Item>
-                ))}
+                      </List.Trailing>
+                    </List.Item>
+                  ))}
+                </List.Section>
               </List>
             </Dynamic>
           )}
@@ -142,6 +143,7 @@ const ScodocUES: React.FC<{ data: UEMap, displayScale: GradeDisplayScale }> = ({
             style={{
               backgroundColor: colors.background,
               flex: 1,
+              width: '100%',
             }}
           >
             {openedUE && (
@@ -159,8 +161,8 @@ const ScodocUES: React.FC<{ data: UEMap, displayScale: GradeDisplayScale }> = ({
                   }}
                 />
 
-                <ScrollView style={{ zIndex: 2 }}>
-                  <Stack padding={24} width='100%' gap={24}>
+                <ScrollView style={{ zIndex: 2, width: '100%' }}>
+                  <Stack padding={24} width='100%' gap={24} >
                     <Stack vAlign='start' hAlign='start' gap={8}>
                       <Stack direction='horizontal' width='100%' vAlign='center' hAlign='center'>
                         <Stack backgroundColor={data[openedUE].color + "22"} padding={[8, 4]} borderRadius={8}>
@@ -188,138 +190,171 @@ const ScodocUES: React.FC<{ data: UEMap, displayScale: GradeDisplayScale }> = ({
                       </Stack>
                     </Stack>
 
-                    <List>
-                      <Item>
-                        <Icon>
-                          <Papicons name='user' />
-                        </Icon>
-                        <Typography variant='title'>
-                          Rang
-                        </Typography>
-                        <Typography variant='body2' color='secondary'>
-                          Emplacement dans la classe
-                        </Typography>
-                        <Trailing>
-                          <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
-                            <Typography variant='navigation' color='text'>
-                              {data[openedUE].moyenne.rang}
-                            </Typography>
-                            <Typography variant='body2' color="secondary">
-                              /{data[openedUE].moyenne.total}
-                            </Typography>
-                          </Stack>
-                        </Trailing>
-                      </Item>
-                      <Item>
-                        <Icon>
-                          <Papicons name='GraduationHat' />
-                        </Icon>
-                        <Typography>
-                          Moyenne de classe
-                        </Typography>
-                        <Trailing>
-                          <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
-                            <Typography variant='navigation' color='text'>
-                              {toDisplay(data[openedUE].moyenne.moy)}
-                            </Typography>
-                            <Typography variant='body2' color="secondary">
-                              {scaleDenominator}
-                            </Typography>
-                          </Stack>
-                        </Trailing>
-                      </Item>
-                      <Item>
-                        <Icon>
-                          <Papicons name='ArrowRightUp' />
-                        </Icon>
-                        <Typography>
-                          Moyenne basse
-                        </Typography>
-                        <Trailing>
-                          <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
-                            <Typography variant='navigation' color='text'>
-                              {toDisplay(data[openedUE].moyenne.min)}
-                            </Typography>
-                            <Typography variant='body2' color="secondary">
-                              {scaleDenominator}
-                            </Typography>
-                          </Stack>
-                        </Trailing>
-                      </Item>
-                      <Item>
-                        <Icon>
-                          <Papicons name='minus' />
-                        </Icon>
-                        <Typography>
-                          Moyenne haute
-                        </Typography>
-                        <Trailing>
-                          <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
-                            <Typography variant='navigation' color='text'>
-                              {toDisplay(data[openedUE].moyenne.max)}
-                            </Typography>
-                            <Typography variant='body2' color="secondary">
-                              {scaleDenominator}
-                            </Typography>
-                          </Stack>
-                        </Trailing>
-                      </Item>
+                    <List style={{ width: "100%" }}>
+                      <List.Section>
+                        <List.SectionTitle>
+                          <Typography variant='body1' color='secondary' weight='semibold'>Statistiques</Typography>
+                        </List.SectionTitle>
+                      </List.Section>
+
+                      <List.Section>
+                        <List.Item>
+                          <List.Leading>
+                            <Icon>
+                              <Papicons name='user' />
+                            </Icon>
+                          </List.Leading>
+                          <Typography variant='title'>
+                            Rang
+                          </Typography>
+                          <Typography variant='body2' color='secondary'>
+                            Emplacement dans la classe
+                          </Typography>
+                          <List.Trailing>
+                            <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
+                              <Typography variant='navigation' color='text'>
+                                {data[openedUE].moyenne.rang}
+                              </Typography>
+                              <Typography variant='body2' color="secondary">
+                                /{data[openedUE].moyenne.total}
+                              </Typography>
+                            </Stack>
+                          </List.Trailing>
+                        </List.Item>
+                        <List.Item>
+                          <List.Leading>
+                            <Icon>
+                              <Papicons name='GraduationHat' />
+                            </Icon>
+                          </List.Leading>
+                          <Typography>
+                            Moyenne de classe
+                          </Typography>
+                          <List.Trailing>
+                            <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
+                              <Typography variant='navigation' color='text'>
+                                {toDisplay(data[openedUE].moyenne.moy)}
+                              </Typography>
+                              <Typography variant='body2' color="secondary">
+                                {scaleDenominator}
+                              </Typography>
+                            </Stack>
+                          </List.Trailing>
+                        </List.Item>
+                        <List.Item>
+                          <List.Leading>
+                            <Icon>
+                              <Papicons name='ArrowRightUp' />
+                            </Icon>
+                          </List.Leading>
+                          <Typography>
+                            Moyenne basse
+                          </Typography>
+                          <List.Trailing>
+                            <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
+                              <Typography variant='navigation' color='text'>
+                                {toDisplay(data[openedUE].moyenne.min)}
+                              </Typography>
+                              <Typography variant='body2' color="secondary">
+                                {scaleDenominator}
+                              </Typography>
+                            </Stack>
+                          </List.Trailing>
+                        </List.Item>
+                        <List.Item>
+                          <List.Leading>
+                            <Icon>
+                              <Papicons name='minus' />
+                            </Icon>
+                          </List.Leading>
+                          <Typography>
+                            Moyenne haute
+                          </Typography>
+                          <List.Trailing>
+                            <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
+                              <Typography variant='navigation' color='text'>
+                                {toDisplay(data[openedUE].moyenne.max)}
+                              </Typography>
+                              <Typography variant='body2' color="secondary">
+                                {scaleDenominator}
+                              </Typography>
+                            </Stack>
+                          </List.Trailing>
+                        </List.Item>
+                      </List.Section>
                     </List>
 
-                    <List>
-                      {Object.entries(data[openedUE].saes).map(([key, value]) => (
-                        <Item key={key}>
-                          <Typography variant='title'>
-                            {key}
-                          </Typography>
-                          <Trailing>
-                            <Stack direction='horizontal' gap={8} hAlign='center'>
-                              <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0}>
-                                <Typography variant='navigation' color='text'>
-                                  {toDisplay(value.moyenne)}
-                                </Typography>
-                                <Typography variant='body2' color="secondary">
-                                  {scaleDenominator}
-                                </Typography>
-                              </Stack>
+                    <List style={{ width: "100%" }}>
+                      <List.Section>
+                        <List.SectionTitle>
+                          <Typography variant='body1' color='secondary' weight='semibold'>SAE</Typography>
+                        </List.SectionTitle>
+                        <List.View style={{ height: 4 }} />
+                      </List.Section>
+                      <List.Section>
+                        {Object.entries(data[openedUE].saes).map(([key, value]) => (
+                          <List.Item key={key}>
+                            <Typography variant='title'>
+                              {key}
+                            </Typography>
+                            <List.Trailing>
+                              <Stack direction='horizontal' gap={8} hAlign='center'>
+                                <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0}>
+                                  <Typography variant='navigation' color='text'>
+                                    {toDisplay(value.moyenne)}
+                                  </Typography>
+                                  <Typography variant='body2' color="secondary">
+                                    {scaleDenominator}
+                                  </Typography>
+                                </Stack>
 
-                              <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
-                                <Typography variant='navigation' color='text'>
-                                  x{value.coef}
-                                </Typography>
+                                <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
+                                  <Typography variant='navigation' color='text'>
+                                    x{value.coef}
+                                  </Typography>
+                                </Stack>
                               </Stack>
-                            </Stack>
-                          </Trailing>
-                        </Item>
-                      ))}
+                            </List.Trailing>
+                          </List.Item>
+                        ))}
+                      </List.Section>
                     </List>
 
-                    <List>
-                      {Object.entries(data[openedUE].ressources).map(([key, value]) => (
-                        <Item key={key}>
-                          <Typography variant='title'>
-                            {key}
-                          </Typography>
-                          <Trailing>
-                            <Stack direction='horizontal' gap={8} hAlign='center'>
-                              <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0}>
-                                <Typography variant='navigation' color='text'>
-                                  {toDisplay(value.moyenne)}
-                                </Typography>
-                                <Typography variant='body2' color="secondary">
-                                  {scaleDenominator}
-                                </Typography>
-                              </Stack>
+                    <List style={{ width: "100%" }}>
+                      <List.Section>
+                        <List.SectionTitle>
+                          <Typography variant='body1' color='secondary' weight='semibold'>Ressources</Typography>
+                        </List.SectionTitle>
+                        <List.View style={{ height: 4 }} />
+                      </List.Section>
 
-                              <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
-                                <Typography variant='navigation' color='text'>
-                                  x{value.coef}
-                                </Typography>
+                      <List.Section>
+                        {Object.entries(data[openedUE].ressources).map(([key, value]) => (
+                          <List.Item key={key}>
+                            <Typography variant='title'>
+                              {key}
+                            </Typography>
+                            <List.Trailing>
+                              <Stack direction='horizontal' gap={8} hAlign='center'>
+                                <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0}>
+                                  <Typography variant='navigation' color='text'>
+                                    {toDisplay(value.moyenne)}
+                                  </Typography>
+                                  <Typography variant='body2' color="secondary">
+                                    {scaleDenominator}
+                                  </Typography>
+                                </Stack>
+
+                                <Stack direction='horizontal' vAlign='end' hAlign='end' gap={0} padding={[8, 2]} bordered radius={8}>
+                                  <Typography variant='navigation' color='text'>
+                                    x{value.coef}
+                                  </Typography>
+                                </Stack>
                               </Stack>
-                            </Stack>
-                          </Trailing>
-                        </Item>
-                      ))}
+                            </List.Trailing>
+                          </List.Item>
+                        ))}
+                      </List.Section>
                     </List>
                   </Stack>
                 </ScrollView>
