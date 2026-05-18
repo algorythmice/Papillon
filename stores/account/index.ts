@@ -219,7 +219,7 @@ export const useAccountStore = create<AccountsStorage>()(
                     longitude: -1,
                     latitude: -1,
                   },
-                  defaultApp: account.transport?.defaultApp ?? "transit",
+                  defaultApp: account.transport?.defaultApp ?? "google_maps",
                 },
               };
             }
@@ -251,7 +251,7 @@ export const useAccountStore = create<AccountsStorage>()(
                 transport: {
                   ...account.transport,
                   enabled: true,
-                  defaultApp: account.transport?.defaultApp ?? "transit",
+                  defaultApp: account.transport?.defaultApp ?? "google_maps",
                   homeAddress: address,
                 },
               };
@@ -268,7 +268,7 @@ export const useAccountStore = create<AccountsStorage>()(
                 transport: {
                   ...account.transport,
                   enabled: true,
-                  defaultApp: account.transport?.defaultApp ?? "transit",
+                  defaultApp: account.transport?.defaultApp ?? "google_maps",
                   schoolAddress: address,
                 },
               };

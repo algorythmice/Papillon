@@ -27,7 +27,6 @@ const HOSTS: Record<string, { title: string; icon: string }> = {
   "api.skolengo.com": { title: "Skolengo", icon: "Skolengo" },
   "analytics.papillon.bzh": { title: "Télémétrie", icon: "PapillonIcon" },
   "github.com": { title: "Ressource(s)", icon: "Code" },
-  "transitapp.com": { title: "Transport", icon: "Metro" },
   "geopf.fr": { title: "Localisation", icon: "MapPin" },
   "raw.githubusercontent.com": { title: "GitHub", icon: "Code" }
 };

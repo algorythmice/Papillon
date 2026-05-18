@@ -74,7 +74,7 @@ export default {
           "et",
         ],
         CADisableMinimumFrameDurationOnPhone: true,
-        LSApplicationQueriesSchemes: ["transit", "maps"],
+        LSApplicationQueriesSchemes: ["maps"],
       },
       supportsTablet: true,
       config: {

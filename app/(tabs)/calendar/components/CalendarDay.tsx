@@ -3,7 +3,6 @@ import { t } from "i18next";
 import React, { useMemo, useRef } from "react";
 import { Dimensions,FlatList, Platform, RefreshControl, StyleSheet, View } from 'react-native';
 
-import { Transit } from "@/components/Transit";
 import { Course as SharedCourse, CourseStatus } from "@/services/shared/timetable";
 import { TransportStorage } from "@/stores/account/types";
 import Course from "@/ui/components/Course";
@@ -87,15 +86,6 @@ export const CalendarDay = React.memo(({ dayDate, courses, isRefreshing, onRefre
     if (!dayEvents || dayEvents.length === 0) {return dayEvents;}
     const result: any[] = [];
 
-    // Add transport departure
-    if (transportInfo?.enabled ?? false) {
-      result.push({
-        type: "transit",
-        isDeparture: true,
-        targetTime: dayEvents[0].from.getTime() / 1000,
-      });
-    }
-
     // Add separator between events
     for (let i = 0; i < dayEvents.length; i++) {
       result.push(dayEvents[i]);
@@ -115,15 +105,6 @@ export const CalendarDay = React.memo(({ dayDate, courses, isRefreshing, onRefre
           }
         }
       }
-    }
-
-    // Add transport arrival
-    if (transportInfo?.enabled ?? false) {
-      result.push({
-        type: "transit",
-        isDeparture: false,
-        targetTime: result[result.length - 1].to.getTime() / 1000,
-      });
     }
 
     return result;
@@ -157,18 +138,6 @@ export const CalendarDay = React.memo(({ dayDate, courses, isRefreshing, onRefre
         keyExtractor={item => item.id || `${item.type}-${item.from || item.targetTime}`}
         ListEmptyComponent={<EmptyCalendar />}
         renderItem={({ item }: { item: SharedCourse }) => {
-          if ((item as any).type === "transit") {
-            return (
-              <Transit
-                isDeparture={item.isDeparture}
-                homeAddress={transportInfo?.homeAddress}
-                schoolAddress={transportInfo?.schoolAddress}
-                targetTime={item.targetTime}
-                service={transportInfo?.defaultApp ?? 'transit'}
-              />
-            );
-          }
-
           if ((item as any).type === "separator") {
             return (
               <Course
