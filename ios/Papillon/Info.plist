@@ -61,7 +61,7 @@
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key>
-    <string>8.4.1</string>
+    <string>8.4.2</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleURLTypes</key>
@@ -87,7 +87,6 @@
     <false/>
     <key>LSApplicationQueriesSchemes</key>
     <array>
-      <string>transit</string>
       <string>maps</string>
     </array>
     <key>LSMinimumSystemVersion</key>
