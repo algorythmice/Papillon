@@ -8,8 +8,6 @@ import { Skolengo as SkolengoSession } from "skolengojs";
 import { Client as TurboselfClient } from "turboself-api";
 
 import { Appscho } from "@/services/appscho";
-import { Lannion } from "@/services/lannion";
-import { LannionClient } from "@/services/lannion/module";
 import { Pronote } from "@/services/pronote";
 import { Attendance } from "@/services/shared/attendance";
 import {
@@ -58,12 +56,11 @@ export interface SchoolServicePlugin {
     | ArdClient
     | TurboselfClient
     | User
-    | LannionClient
     | undefined;
 
   refreshAccount: (
     credentials: Auth
-  ) => Promise<Pronote | Skolengo | EcoleDirecte | Multi | TurboSelf | ARD | Izly | Alise | Appscho | Lannion>;
+  ) => Promise<Pronote | Skolengo | EcoleDirecte | Multi | TurboSelf | ARD | Izly | Alise | Appscho>;
   getKids?: () => Kid[];
   getCanteenKind?: () => CanteenKind;
   getHomeworks?: (weekNumber: number) => Promise<Homework[]>;

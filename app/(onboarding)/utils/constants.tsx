@@ -65,17 +65,6 @@ export function GetSupportedServices(redirect: (path: { pathname: string, option
       color: 'light' as const,
     },
     {
-      name: "lannion",
-      route: "lannion",
-      title: t("ONBOARDING_SERVICE_LANNION"),
-      hasLimitedSupport: false,
-      image: require("@/assets/images/univ_lannion.png"),
-      type: ["univ"],
-      onPress: () => {
-        redirect({ pathname: './lannion/credentials' });
-      },
-    },
-    {
       name: "univ-lorraine",
       title: t("ONBOARDING_SERVICE_UNIV_LORRAINE"),
       hasLimitedSupport: false,
@@ -131,16 +120,6 @@ export function GetSupportedUniversities(redirect: (path: { pathname: string, op
 
   return [
     {
-      name: "lannion",
-      title: t("ONBOARDING_SERVICE_LANNION"),
-      hasLimitedSupport: false,
-      image: require("@/assets/images/univ_lannion.png"),
-      type: "main",
-      onPress: () => {
-        redirect({ pathname: './lannion/credentials' });
-      },
-    },
-    {
       name: "univ-lorraine",
       title: t("ONBOARDING_SERVICE_UNIV_LORRAINE"),
       hasLimitedSupport: false,
@@ -181,7 +160,7 @@ export function GetSupportedUniversities(redirect: (path: { pathname: string, op
       name: "limited-functions",
       title: t("Feature_Limited"),
       hasLimitedSupport: true,
-      image: require("@/assets/images/univ_lannion.png"),
+      image: require("@/assets/images/icon.png"),
       type: "separator",
       onPress: () => { }
     },
