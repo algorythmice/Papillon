@@ -84,6 +84,10 @@ export default {
     android: {
       versionCode: androidVersionCode,
       package: "xyz.getpapillon.app",
+      blockedPermissions: [
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+      ],
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
