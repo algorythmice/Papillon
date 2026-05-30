@@ -33,14 +33,6 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Cache Expo prebuild
-        id: prebuild-cache
-        uses: actions/cache@v4
-        with:
-          path: android/
-          key: ${{ runner.os }}-expo-prebuild-${{ hashFiles('app.config.ts', 'package-lock.json') }}
-          restore-keys: ${{ runner.os }}-expo-prebuild-
-
       - name: Create secrets.json
         run: |
           echo '{
@@ -50,7 +42,6 @@ jobs:
           }' > secrets.json
 
       - name: Prebuild Android
-        if: steps.prebuild-cache.outputs.cache-hit != 'true'
         run: npx expo prebuild --platform android --clean
 
       - name: Decode keystore
