@@ -63,12 +63,9 @@ jobs:
 
       - name: Calculate version code
         run: |
-          VERSION_CODE=$(node -e "
-            const version = require('./package.json').version;
-            const cleanVersion = parseInt(version.replace(/\./g, ''));
-            const runNumber = parseInt(process.env.GITHUB_RUN_NUMBER || '0');
-            console.log(cleanVersion * 100000 + runNumber);
-          ")
+          # versionCode: seconds since 2020-01-01 UTC — unique, strictly increasing, well under the 2.1e9 cap
+          VERSION_CODE=$(( $(date -u +%s) - 1577836800 ))
+          echo "versionCode : $VERSION_CODE"
           echo "VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
 
       - name: Configure signing

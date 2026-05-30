@@ -1,7 +1,7 @@
 import PackageJSON from "./package.json" with { type: 'json' };
 
-const androidPreVersion = PackageJSON.version.replaceAll(".", "")
-const androidVersionCode = androidPreVersion.length == 3 ? parseInt(androidPreVersion + "00") : androidPreVersion.length == 4 ? parseInt(androidPreVersion + "0") : parseInt(androidPreVersion)
+// versionCode: seconds since 2020-01-01 UTC — unique, strictly increasing, well under the 2.1e9 cap
+const androidVersionCode = Math.floor(Date.now() / 1000) - 1577836800
 
 export default {
   expo: {
